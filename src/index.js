@@ -3,7 +3,7 @@
 function updateDateTime() {
   let now = new Date();
 
-  let daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat"];
+  let daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
   let monthsOfYear = [
     "Jan",
@@ -55,23 +55,17 @@ let fahrenheit = document.querySelector("#main-temp-f");
 fahrenheit.addEventListener("click", temperatureFahrenheit);
 
 //Search API
-
-let searchForm = document.querySelector("#search-form");
-
-searchFormm.addEventListener("submit", Submit);
-
-function search(city) {
+function searchCity(city) {
   let apiKey = "1fd8093fa5ff12d796d7de756cc9d6b9";
   let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric`;
   axios.get(`${apiUrl}&appid=${apiKey}`).then(displayWeatherCondition);
 }
 
-function search(city) {
-  city.preventDefault();
+function search(event) {
+  event.preventDefault();
   let searchInput = document.querySelector("#search-text-input");
-  search(city);
-  let h1 = document.querySelector("h1");
-  h1.innerHTML = `${searchInput.value}`;
+  searchCity(searchInput.value);
+  searchInput.value = "";
 }
 let inputGroup = document.querySelector("#searchInput");
 inputGroup.addEventListener("submit", search);
@@ -80,11 +74,11 @@ inputGroup.addEventListener("submit", search);
 function displayWeatherCondition(response) {
   console.log(response.data);
   document.querySelector(
-    "#city"
+    "#search-results"
   ).innerHTML = `${response.data.name}, ${response.data.sys.country}`;
   let temperature = Math.round(response.data.main.temp);
   let temperatureElement = document.querySelector("#main-temp");
-  temperatureElement.innerHTML = `${temperature}°C`;
+  temperatureElement.innerHTML = `${temperature}`;
 
   let temperatureDes = response.data.weather[0].description;
   let description = document.querySelector(".temperatureDes");
